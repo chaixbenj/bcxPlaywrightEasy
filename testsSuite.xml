@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="testsSuite" verbose="1" parallel="tests" thread-count="5">
+        <test name="AutomationExercise">
+                <packages>
+                        <package name="testCase.AutomationExercise"/>
+                </packages>
+        </test>
+        <test name="AutomationExercise2">
+                <packages>
+                        <package name="testCase.AutomationExercise2"/>
+                </packages>
+        </test>
+        <test name="Tuto">
+                <packages>
+                        <package name="testCase.Tuto"/>
+                </packages>
+        </test>
+        <!--test name="TC1">
+                <classes>
+                        <class name="testCase.AutomationExercise.tc1"/>
+                </classes>
+        </test>
+        <test name="TC2">
+                <classes>
+                        <class name="testCase.AutomationExercise.tc2"/>
+                </classes>
+        </test>
+        <test name="TCPersonne">
+                <classes>
+                        <class name="testCase.Tuto.TC_Person"/>
+                </classes>
+        </test-->
+
+</suite>
