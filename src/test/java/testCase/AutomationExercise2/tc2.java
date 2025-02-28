@@ -1,10 +1,10 @@
 package testCase.AutomationExercise2;
 
 
-import bcx.playwright.properties.GlobalProp;
-import bcx.playwright.report.Reporter;
-import bcx.playwright.test.BaseTest;
-import bcx.playwright.util.data.DataUtil;
+import bcx.automation.properties.GlobalProp;
+import bcx.automation.report.Reporter;
+import bcx.automation.test.BaseTest;
+import bcx.automation.util.data.DataUtil;
 import org.testng.annotations.Test;
 import pages.AutomationExercise.AutomationExerciseDeleteAccount;
 import pages.AutomationExercise.AutomationExerciseHome;

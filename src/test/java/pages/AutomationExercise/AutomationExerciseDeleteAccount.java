@@ -1,8 +1,8 @@
 package pages.AutomationExercise;
 
-import bcx.playwright.page.BasePage;
-import bcx.playwright.page.element.BaseElement;
-import bcx.playwright.test.TestContext;
+import bcx.automation.playwright.page.BasePage;
+import bcx.automation.playwright.element.BaseElement;
+import bcx.automation.test.TestContext;
 
 public class AutomationExerciseDeleteAccount extends BasePage {
     public final BaseElement accountDeletedMessage = new BaseElement(this.getTestContext(), "account deleted message", this.getPage().locator("//*[.=\"Account Deleted!\"]"));

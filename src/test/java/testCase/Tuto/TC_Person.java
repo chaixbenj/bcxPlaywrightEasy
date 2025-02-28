@@ -1,8 +1,8 @@
 package testCase.Tuto;
 
 
-import bcx.playwright.test.BaseTest;
-import bcx.playwright.report.Reporter;
+import bcx.automation.test.BaseTest;
+import bcx.automation.report.Reporter;
 import org.testng.annotations.Test;
 import pages.Tuto.MyForm;
 
@@ -13,7 +13,6 @@ public class TC_Person extends BaseTest {
     @Test
     public void createPerson() {
         try {
-
             MyForm myForm = new MyForm(this.testContext);
             myForm.navigate();
             myForm.setValue("person.csv", "tc1");

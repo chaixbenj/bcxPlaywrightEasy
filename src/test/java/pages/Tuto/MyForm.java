@@ -1,12 +1,12 @@
 package pages.Tuto;
-import bcx.playwright.page.BasePage;
-import bcx.playwright.page.element.BaseElement;
-import bcx.playwright.page.element.RadioGroup;
-import bcx.playwright.page.element.CheckboxGroup;
-import bcx.playwright.page.element.Dropdown;
-import bcx.playwright.page.element.MultiDropdown;
-import bcx.playwright.page.element.Grid;
-import bcx.playwright.test.TestContext;
+import bcx.automation.playwright.page.BasePage;
+import bcx.automation.playwright.element.BaseElement;
+import bcx.automation.playwright.element.RadioGroup;
+import bcx.automation.playwright.element.CheckboxGroup;
+import bcx.automation.playwright.element.Dropdown;
+import bcx.automation.playwright.element.MultiDropdown;
+import bcx.automation.playwright.element.Grid;
+import bcx.automation.test.TestContext;
 
 
 public class MyForm extends BasePage {

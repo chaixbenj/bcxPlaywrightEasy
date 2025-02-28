@@ -1,10 +1,10 @@
 package pages.AutomationExercise;
 
-import bcx.playwright.page.BasePage;
-import bcx.playwright.page.element.BaseElement;
-import bcx.playwright.page.element.ElementList;
-import bcx.playwright.page.element.RadioGroup;
-import bcx.playwright.test.TestContext;
+import bcx.automation.playwright.page.BasePage;
+import bcx.automation.playwright.element.BaseElement;
+import bcx.automation.playwright.element.ElementList;
+import bcx.automation.playwright.element.RadioGroup;
+import bcx.automation.test.TestContext;
 
 
 public class AutomationExerciseNewUserAccount extends BasePage {

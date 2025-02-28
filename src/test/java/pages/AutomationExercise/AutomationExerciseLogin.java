@@ -1,9 +1,9 @@
 package pages.AutomationExercise;
 
-import bcx.playwright.page.BasePage;
-import bcx.playwright.page.element.BaseElement;
-import bcx.playwright.properties.EnvProp;
-import bcx.playwright.test.TestContext;
+import bcx.automation.playwright.page.BasePage;
+import bcx.automation.playwright.element.BaseElement;
+import bcx.automation.properties.EnvProp;
+import bcx.automation.test.TestContext;
 
 
 public class AutomationExerciseLogin extends BasePage {
