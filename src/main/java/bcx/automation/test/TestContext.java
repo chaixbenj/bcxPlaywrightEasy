@@ -138,11 +138,9 @@ public class TestContext {
 
     /**
      * Initialise le rapport de test.
-     *
-     * @param reportname Le nom du rapport.
      */
-    public void initReport(String reportname) {
-        report = new Reporter(reportname);
+    public void initReport() {
+        report = new Reporter();
     }
 
     /**

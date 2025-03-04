@@ -499,7 +499,7 @@ public abstract class BaseElement {
      */
     public WebElement findElement(int timeout) {
         if (GlobalProp.isSuiteOverTimeOut()) {
-            this.report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT);
+            this.report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT);
             return null;
         }
         WebElement monElement = null;
@@ -516,6 +516,7 @@ public abstract class BaseElement {
         } catch (Exception ignore) {
             // ignore
         }
+        report.setPlaywrightCmd(false);
         return monElement;
     }
 
@@ -534,7 +535,7 @@ public abstract class BaseElement {
     public List<WebElement> findAllElements(int timeout) {
         timeout = timeout / 2;
         if (GlobalProp.isSuiteOverTimeOut()) {
-            this.report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT);
+            this.report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT);
             return new ArrayList<>();
         }
 
@@ -576,7 +577,7 @@ public abstract class BaseElement {
      */
     public WebElement findElementEnabled(int timeout) {
         if (GlobalProp.isSuiteOverTimeOut()) {
-            this.report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT);
+            this.report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT);
             return null;
         }
         WebElement monElement = findElement(timeout);
@@ -598,6 +599,7 @@ public abstract class BaseElement {
                 monElement = findElement(0);
             }
         }
+        report.setPlaywrightCmd(false);
         return monElement;
     }
 
@@ -615,7 +617,7 @@ public abstract class BaseElement {
      */
     public WebElement findElementDisplayed(int timeout) {
         if (GlobalProp.isSuiteOverTimeOut()) {
-            this.report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT);
+            this.report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT);
             return null;
         }
         WebElement monElement = null;
@@ -635,6 +637,7 @@ public abstract class BaseElement {
         } catch (Exception ignore) {
             monElement = findElement(0);
         }
+        report.setPlaywrightCmd(false);
         return monElement;
     }
 

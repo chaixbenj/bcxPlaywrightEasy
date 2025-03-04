@@ -58,7 +58,7 @@ public class CsvUtil {
         if (allRecordFields != null) {
             recordFields = allRecordFields.get(String.valueOf(rowNumber));
         } else {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "error loading testset " + GlobalProp.getTestFileFolder() + dataSetName + " [" + rowNumber + "] ");
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "error loading testset " + GlobalProp.getTestFileFolder() + dataSetName + " [" + rowNumber + "] ");
         }
         return recordFields;
     }
@@ -92,7 +92,7 @@ public class CsvUtil {
         if (allRecordFields != null) {
             recordFields = allRecordFields.get(testid);
         } else {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "error loading testset " + GlobalProp.getTestFileFolder() + dataSetName + " [" + testid + "] ");
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "error loading testset " + GlobalProp.getTestFileFolder() + dataSetName + " [" + testid + "] ");
         }
         return recordFields;
     }
@@ -146,7 +146,7 @@ public class CsvUtil {
                 ligne = buff.readLine();
             }
         } catch (Exception e) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "error loading testset " + GlobalProp.getTestFileFolder() + dataSetName, e);
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "error loading testset " + GlobalProp.getTestFileFolder() + dataSetName, e);
         }
         return allRecordFields;
     }

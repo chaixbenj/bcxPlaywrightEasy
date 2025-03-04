@@ -38,7 +38,7 @@ public abstract class BasePage {
             this.iosDriver = (IOSDriver) appiumDriver;
             isAndroid = false;
         } else {
-            this.report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, "Erreur au démarrage", new Exception("AppiumDriver non défini"));
+            this.report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, "Erreur au démarrage", new Exception("AppiumDriver non défini"));
         }
     }
 

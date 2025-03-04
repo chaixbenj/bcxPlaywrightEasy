@@ -10,7 +10,7 @@ import pages.Tuto.MyForm;
 public class TC_Person extends BaseTest {
 
 
-    @Test
+    @Test(groups = {"tuto1"})
     public void createPerson() {
         try {
             MyForm myForm = new MyForm(this.testContext);
@@ -28,7 +28,9 @@ public class TC_Person extends BaseTest {
 
 
         } catch (Exception e) {
-            this.getReport().log(Reporter.ERROR_STATUS, e);
+            this.getReport().log(Reporter.FAIL_STATUS, e);
+        } finally {
+            endTest();
         }
     }
 

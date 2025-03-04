@@ -55,7 +55,7 @@ public class BatchUtil extends ShellUtil {
                 logBatch = waitForBatchEnd(report, timeOut);
             } catch (Exception e) {
                 if (report != null)
-                    report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, "call batch " + serverBatch + " " + batchPath + " " + batchCommand, e);
+                    report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, "call batch " + serverBatch + " " + batchPath + " " + batchCommand, e);
             }
             Objects.requireNonNull(shellStream).close();
             Objects.requireNonNull(session).disconnect();
@@ -111,7 +111,7 @@ public class BatchUtil extends ShellUtil {
             report.log(Reporter.WARNING_STATUS_NO_SCREENSHOT, "Exception found in batch call : \n" + logBatch.replace("Exception", "<b>Exception</b>"));
         }
         if (logBatchComplete.contains("Error: Unable to access jarfile") && report != null) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "Error: Unable to access jarfile in batch call : \n" + logBatchComplete.replace("Exception", "<b>Exception</b>"));
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "Error: Unable to access jarfile in batch call : \n" + logBatchComplete.replace("Exception", "<b>Exception</b>"));
         }
         return logBatchComplete;
     }

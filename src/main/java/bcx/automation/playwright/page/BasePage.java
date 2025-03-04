@@ -5,6 +5,7 @@ import bcx.automation.test.TestContext;
 import bcx.automation.util.app.ConnectedUserUtil;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
+import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.*;
  */
 @Slf4j
 public abstract class BasePage {
+    public static final String TEST_ID = "test-id";
     @Getter
     private final TestContext testContext;
     @Getter
@@ -61,6 +63,7 @@ public abstract class BasePage {
      */
     public void navigate() {
         this.page.navigate(url);
+        this.report.log(Reporter.INFO_STATUS, "Navigation vers la page " + url);
     }
 
     /**
@@ -138,7 +141,7 @@ public abstract class BasePage {
             ConnectedUserUtil.setConnectedUser(user, this.page);
             return true;
         } catch (Exception e) {
-            this.report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, e);
+            this.report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, e);
             e.printStackTrace();
         }
         return false;
@@ -163,11 +166,12 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void setValue(DataSetUtil dataSet) {
+        report.startStep(this.getClass().getSimpleName() + " setValue");
         LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
         for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
             String key = String.valueOf(jdd.getKey());
             String value = String.valueOf(jdd.getValue());
-            if (!key.equals("test-id") && !value.equals("N/A")) {
+            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
                 if (elements.containsKey(key)) {
                     elements.get(key).setValue(value);
                 } else {
@@ -176,6 +180,7 @@ public abstract class BasePage {
                 }
             }
         }
+        report.stopStep();
     }
 
     /**
@@ -197,11 +202,12 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void assertValue(DataSetUtil dataSet) {
+        report.startStep(this.getClass().getSimpleName() + " assertValue");
         LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
         for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
             String key = String.valueOf(jdd.getKey());
             String value = String.valueOf(jdd.getValue());
-            if (!key.equals("test-id") && !value.equals("N/A")) {
+            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
                 if (elements.containsKey(key)) {
                     elements.get(key).assertValue(value);
                 } else {
@@ -210,6 +216,7 @@ public abstract class BasePage {
                 }
             }
         }
+        report.stopStep();
     }
 
     /**
@@ -231,11 +238,12 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void assertVisible(DataSetUtil dataSet) {
+        report.startStep(this.getClass().getSimpleName() + " assertVisible");
         LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
         for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
             String key = String.valueOf(jdd.getKey());
             String value = String.valueOf(jdd.getValue());
-            if (!key.equals("test-id") && !value.equals("N/A")) {
+            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
                 if (elements.containsKey(key)) {
                     elements.get(key).assertVisible(Boolean.parseBoolean(value));
                 } else {
@@ -244,6 +252,7 @@ public abstract class BasePage {
                 }
             }
         }
+        report.stopStep();
     }
 
     /**
@@ -265,11 +274,12 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void assertEnabled(DataSetUtil dataSet) {
+        report.startStep(this.getClass().getSimpleName() + " assertEnabled");
         LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
         for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
             String key = String.valueOf(jdd.getKey());
             String value = String.valueOf(jdd.getValue());
-            if (!key.equals("test-id") && !value.equals("N/A")) {
+            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
                 if (elements.containsKey(key)) {
                     elements.get(key).assertEnabled(Boolean.parseBoolean(value));
                 } else {
@@ -278,6 +288,7 @@ public abstract class BasePage {
                 }
             }
         }
+        report.stopStep();
     }
 
     /**
@@ -299,11 +310,12 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void assertRequired(DataSetUtil dataSet) {
+        report.startStep(this.getClass().getSimpleName() + " assertRequired");
         LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
         for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
             String key = String.valueOf(jdd.getKey());
             String value = String.valueOf(jdd.getValue());
-            if (!key.equals("test-id") && !value.equals("N/A")) {
+            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
                 if (elements.containsKey(key)) {
                     elements.get(key).assertRequired(Boolean.parseBoolean(value));
                 } else {
@@ -312,6 +324,7 @@ public abstract class BasePage {
                 }
             }
         }
+        report.stopStep();
     }
 
     /**
@@ -353,7 +366,7 @@ public abstract class BasePage {
                 }
             }
         }
-        this.report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "switchToNewOpenedTab, new Tab not found");
+        this.report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "switchToNewOpenedTab, new Tab not found");
         saveAllOpenedTabs();
         return null;
     }

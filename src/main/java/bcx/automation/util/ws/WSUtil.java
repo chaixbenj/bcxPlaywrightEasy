@@ -86,12 +86,12 @@ public class WSUtil {
             e.printStackTrace();
             reponse = "exception";
             if (report != null) {
-                report.log(expectedStatus == -1 ? Reporter.WARNING_STATUS_NO_SCREENSHOT : Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "Exception in NetClient:- \n", e);
+                report.log(expectedStatus == -1 ? Reporter.WARNING_STATUS_NO_SCREENSHOT : Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "Exception in NetClient:- \n", e);
             }
         }
-        String statusResultat = (expectedStatus == -1 || expectedStatus == status ? Reporter.PASS_STATUS : Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT);
+        String statusResultat = (expectedStatus == -1 || expectedStatus == status ? Reporter.PASS_STATUS : Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT);
         if (report != null && (log || !statusResultat.equals(Reporter.PASS_STATUS))) {
-            report.log(statusResultat, "status attendu/constaté : " + expectedStatus + "/" + status + " on " + method + " " + uri + "<br>" + String.valueOf(payload).replace(",", ",<br>") + "<br><br>réponse :" + (reponse.startsWith("%PDF") ? reponse.substring(0, 500) + ",... String tronquée dans le rapport" : reponse).replace(",", ",<br>"), false);
+            report.log(statusResultat, "status attendu/constaté : " + expectedStatus + "/" + status + " on " + method + " " + uri + "  \n" + String.valueOf(payload).replace(",", ",  \n") + "  \n  \nréponse :" + (reponse.startsWith("%PDF") ? reponse.substring(0, 500) + ",... String tronquée dans le rapport" : reponse).replace(",", ",  \n"), false);
         }
         System.clearProperty(HTTPS_PROXY_HOST);
         System.clearProperty(HTTPS_PROXY_PORT);

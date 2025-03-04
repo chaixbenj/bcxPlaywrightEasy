@@ -246,8 +246,8 @@ public class DataUtil {
         }
         String initRefText = refText;
         String initText = text;
-        refText = refText.replace("\n", " ").replace("<br>", " ").replace("  ", " ");
-        text = text.replace("\n", " ").replace("<br>", " ").replace("  ", " ");
+        refText = refText.replace("\n", " ").replace("  \n", " ").replace("  ", " ");
+        text = text.replace("\n", " ").replace("  \n", " ").replace("  ", " ");
         refText = StringUtils.normalizeSpace(refText.trim());
         text = StringUtils.normalizeSpace(text.trim());
         s1 = refText.replace(",", " , ").split(" ");
@@ -330,7 +330,7 @@ public class DataUtil {
                 return Reporter.PASS_STATUS;
             } else {
                 if (logStatus != null) {
-                    report.log(logStatus, "Attendu : <br>" + initRefText + "<br>constaté : <br>" + initText);
+                    report.log(logStatus, "Attendu :   \n" + initRefText + "  \nconstaté :   \n" + initText);
                 }
                 report.log(Reporter.WARNING_STATUS_NO_SCREENSHOT, "retrait des textes communs ref : " + refText);
                 report.log(Reporter.WARNING_STATUS_NO_SCREENSHOT, "retrait des textes communs current : " + text);

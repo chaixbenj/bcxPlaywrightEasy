@@ -44,7 +44,7 @@ public class ShellUtil {
         } catch (Exception e) {
             log.error("Echec de la connexion à " + server + " avec " + user);
             if (report != null)
-                report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, "Impossible de se connecter au serveur " + server, e);
+                report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, "Impossible de se connecter au serveur " + server, e);
         }
     }
 }

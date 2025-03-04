@@ -9,6 +9,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import bcx.automation.util.data.DataUtil;
 import com.microsoft.playwright.options.LoadState;
+import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -159,9 +160,11 @@ public class BaseElement {
      */
     public Object find(boolean findPotentialElement) {
         Loader.waitNotVisible();
+        report.setCurrentElement(null);
         try {
             getLocatorInContainer().first().waitFor(new Locator.WaitForOptions().setTimeout(GlobalProp.getTimeOut() * 1000));
-            return getLocator();
+            report.setCurrentElement(getLocatorInContainer().first().elementHandle());
+            return getLocatorInContainer();
         } catch (Exception error) {
             try {
                 Object elementProbable = findPotentialElement(findPotentialElement);
@@ -185,7 +188,10 @@ public class BaseElement {
         if (container != page) {
             try {
                 int nbElem = locator.count();
-                if (nbElem == 1) return locator;
+                if (nbElem == 1) {
+                    report.setCurrentElement(locator.elementHandle());
+                    return locator;
+                }
             } catch (Exception ignore) {
                 // ignore
             }
@@ -569,7 +575,7 @@ public class BaseElement {
             String newPotentialElement = (String) element.evaluate("el => el.outerHTML");
             if (potentialElement == null || !potentialElement.equals(newPotentialElement)) {
                 report.setCurrentElement(element);
-                report.takeScreenShot("Elément potentiel trouvé pour l'élément \"" + this.getName() + "\" (locator inital " + this.getLocator() + ") : <BR>" + newPotentialElement.replace("<", "&lt;").replace(">", "&gt;"), true);
+                report.takeScreenShot("Elément potentiel trouvé pour l'élément \"" + this.getName() + "\" (locator inital " + this.getLocator() + ") :   \n" + newPotentialElement.replace("<", "&lt;").replace(">", "&gt;"), Reporter.INFO_STATUS, true);
             }
             potentialElement = newPotentialElement;
         } else {

@@ -1,6 +1,5 @@
 package bcx.automation.util.image;
 
-import com.relevantcodes.extentreports.LogStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import bcx.automation.properties.GlobalProp;
@@ -62,8 +61,8 @@ public class ImageUtil {
         String diffBase64 = null;
         File fileImageCurrent = new File(pdfFilePath);
         File fileImageRef = new File(refPdfFilePath);
-        File rempFile = new File(GlobalProp.getReportFolder()  + fileImageRef.getName());
-        File rempFileSansMasque = new File(GlobalProp.getReportFolder()  + "SANS_MASQUE_" + fileImageRef.getName());
+        File rempFile = new File(GlobalProp.getTestFileFolder()  + fileImageRef.getName());
+        File rempFileSansMasque = new File(GlobalProp.getTestFileFolder()  + "SANS_MASQUE_" + fileImageRef.getName());
         File fileImageDiff = new File(fileImageCurrent.getParent() + "/" + fileImageRef.getName().replace(".", "_DIFF."));
         boolean hasMasque = false;
         double nbpixdiff = 0;
@@ -166,16 +165,16 @@ public class ImageUtil {
         if (difference > 0) {
             if (difference < pourcentageDiffAdmissible || nbpixdiff < 10) {
                 report.log(Reporter.PASS_STATUS, "diff écran / reference = " + nbpixdiff + " pixels, " + difference + " %");
-                report.logImage(LogStatus.PASS, diffBase64);
+                report.logImage(Reporter.PASS_STATUS, diffBase64);
                 hasDiff = false;
             } else {
                 if (Math.abs(difference) < 10) {
                     report.log(Reporter.WARNING_STATUS_NO_SCREENSHOT, "diff écran / reference = " + nbpixdiff + " pixels, " + difference + " %");
-                    report.logImage(LogStatus.WARNING, diffBase64);
+                    report.logImage(Reporter.WARNING_STATUS, diffBase64);
                 } else {
                     Files.copy(fileImageRef.toPath(), new File(TEST_FILE_REPO + "/REF_" + fileImageRef.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
                     report.log(Reporter.WARNING_STATUS_NO_SCREENSHOT, "diff écran / reference = " + nbpixdiff + " pixels, " + difference + " %");
-                    report.logImage(LogStatus.WARNING, diffBase64);
+                    report.logImage(Reporter.WARNING_STATUS, diffBase64);
                 }
                 if (hasMasque) {
                     Files.copy(fileImageCurrentMasked.toPath(), rempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);

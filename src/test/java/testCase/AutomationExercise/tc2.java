@@ -5,6 +5,7 @@ import bcx.automation.test.BaseTest;
 import bcx.automation.properties.GlobalProp;
 import bcx.automation.report.Reporter;
 import bcx.automation.util.data.DataUtil;
+import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import pages.AutomationExercise.AutomationExerciseDeleteAccount;
 import pages.AutomationExercise.AutomationExerciseHome;
@@ -16,7 +17,12 @@ public class tc2 extends BaseTest {
     String name = DataUtil.randomAlphaString().toLowerCase();
     String email = name + "@" + name + ".fr";
 
-    @Test
+    @Test(groups = {"test"})
+    @Epic("Gestion des utilisateurs")
+    @Feature("Création d'un compte")
+    @Story("Création d'un compte cas passant")
+    @Description("Ce test vérifie la connexion avec des identifiants valides.")
+    @Severity(SeverityLevel.CRITICAL)
     public void createAccount() {
         try {
             this.getReport().title("Navigation vers la page d'accueil");
@@ -40,11 +46,18 @@ public class tc2 extends BaseTest {
             automationExerciseHome.loggedInAs.injectValues("{0}", name).assertVisible(true);
 
         } catch (Exception e) {
-            this.getReport().log(Reporter.ERROR_STATUS, e);
+            this.getReport().log(Reporter.FAIL_STATUS, e);
+        } finally {
+            this.getReport().softAssertAll();
         }
     }
 
-    @Test
+    @Test(groups = {"test"})
+    @Epic("Gestion des utilisateurs")
+    @Feature("Suppression d'un compte")
+    @Story("Suppression d'un compte cas passant")
+    @Description("Ce test vérifie la supression d'un compte avec des identifiants valides.")
+    @Severity(SeverityLevel.NORMAL)
     public void deleteAccount() {
         try {
             AutomationExerciseHome automationExerciseHome = new AutomationExerciseHome(this.testContext);
@@ -65,7 +78,9 @@ public class tc2 extends BaseTest {
             automationExerciseDeleteAccount.continueButton.click();
 
         } catch (Exception e) {
-            this.getReport().log(Reporter.ERROR_STATUS, e);
+            this.getReport().log(Reporter.FAIL_STATUS, e);
+        } finally {
+            endTest();
         }
 
     }

@@ -16,7 +16,7 @@ public class tc2 extends BaseTest {
     String name = "b" + DataUtil.randomAlphaString().toLowerCase();
     String email = name + "@" + name + ".fr";
 
-    @Test
+    @Test(groups = {"test"})
     public void createAccount() {
         try {
             this.getReport().title("Navigation vers la page d'accueil");
@@ -40,11 +40,13 @@ public class tc2 extends BaseTest {
             automationExerciseHome.loggedInAs.injectValues("{0}", name).assertVisible(true);
 
         } catch (Exception e) {
-            this.getReport().log(Reporter.ERROR_STATUS, e);
+            this.getReport().log(Reporter.FAIL_STATUS, e);
+        } finally {
+            this.getReport().softAssertAll();
         }
     }
 
-    @Test
+    @Test(groups = {"test"})
     public void deleteAccount() {
         try {
             AutomationExerciseHome automationExerciseHome = new AutomationExerciseHome(this.testContext);
@@ -65,7 +67,9 @@ public class tc2 extends BaseTest {
             automationExerciseDeleteAccount.continueButton.click();
 
         } catch (Exception e) {
-            this.getReport().log(Reporter.ERROR_STATUS, e);
+            this.getReport().log(Reporter.FAIL_STATUS, e);
+        } finally {
+            endTest();
         }
 
     }

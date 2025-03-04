@@ -88,7 +88,7 @@ public class ElementList extends BaseElement {
                 }
 
             } catch (Exception e) {
-                this.getTestContext().getReport().log(Reporter.ERROR_STATUS, action + " >> " + option , getName(), null , null, null, e);
+                this.getTestContext().getReport().log(Reporter.FAIL_STATUS, action + " >> " + option , getName(), null , null, null, e);
             }
 
         }

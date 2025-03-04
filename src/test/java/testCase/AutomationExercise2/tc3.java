@@ -1,10 +1,10 @@
-package testCase.AutomationExercise;
+package testCase.AutomationExercise2;
 
 
-import bcx.automation.test.BaseTest;
 import bcx.automation.report.Reporter;
+import bcx.automation.test.BaseTest;
+import bcx.automation.test.FailureRerun;
 import bcx.automation.util.data.DataUtil;
-import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import pages.AutomationExercise.AutomationExerciseDeleteAccount;
 import pages.AutomationExercise.AutomationExerciseHome;
@@ -12,20 +12,13 @@ import pages.AutomationExercise.AutomationExerciseLogin;
 import pages.AutomationExercise.AutomationExerciseNewUserAccount;
 
 
-public class tc1 extends BaseTest {
-    @Test(groups = {"test"})
-    @Epic("Gestion des utilisateurs")
-    @Feature("Création d'un compte")
-    @Story("Création d'un compte cas passant")
-    @Description("Ce test vérifie la connexion avec des identifiants valides.")
-    @Issue("BUG-456")
-    @Severity(SeverityLevel.CRITICAL)
+public class tc3 extends BaseTest {
+    @Test(groups = {"test"}, retryAnalyzer = FailureRerun.class)
     public void run() {
         try {
-            String name = DataUtil.randomAlphaString().toLowerCase();
+            String name = "b" + DataUtil.randomAlphaString().toLowerCase();
             String email = name + "@" + name + ".fr";
             String password = name + "A1!";
-
 
             this.getReport().title("Navigation vers la page d'accueil");
             AutomationExerciseHome automationExerciseHome = new AutomationExerciseHome(this.testContext);
@@ -68,7 +61,7 @@ public class tc1 extends BaseTest {
             this.getReport().title("Suppression du compte");
             automationExerciseHome.deleteAccount.click();
             AutomationExerciseDeleteAccount automationExerciseDeleteAccount = new AutomationExerciseDeleteAccount(this.testContext);
-            automationExerciseDeleteAccount.accountDeletedMessage.assertVisible(true);
+            automationExerciseDeleteAccount.accountDeletedMessage.assertVisible(false);
             automationExerciseDeleteAccount.continueButton.click();
 
         } catch (Exception e) {
@@ -77,6 +70,6 @@ public class tc1 extends BaseTest {
             endTest();
         }
 
-
     }
+
 }

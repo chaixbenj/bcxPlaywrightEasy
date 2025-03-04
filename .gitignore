@@ -1,5 +1,6 @@
 # Idea Project Files
 .idea/
+.allure/
 target/
 reports/
 test-output/

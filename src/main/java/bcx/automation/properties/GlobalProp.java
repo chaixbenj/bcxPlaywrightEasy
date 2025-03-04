@@ -28,13 +28,9 @@ public class GlobalProp {
     public static final String TIME_OUT = "timeOut";
     public static final String PAGE_LOAD_TIME_OUT = "pageLoadTimeOut";
     public static final String LOADER_TIME_OUT_MINUTE = "loaderTimeOutMinute";
-    public static final String WAIT_PRIME_FACE = "waitPrimeFace";
-    public static final String WAIT_ANGULAR = "waitAngular";
     public static final String UNSAFELY_TREAT_INSECURE = "unsafelyTreatInsecure";
     public static final String TEST_FILE_FOLDER = "testFileFolder";
-    public static final String REPORT_FOLDER = "reportFolder";
     public static final String VIDEO_FOLDER = "videoFolder";
-    public static final String AUTO_VALID_JS_ALERT = "autoValidJSAlert";
     public static final String FORCE_STOP_ON_FAIL = "forceStopOnFail";
     public static final String SUITE_MAX_TIME = "suiteMaxTime";
     public static final String RETRY_ON_FAIL = "retryOnFail";
@@ -75,24 +71,13 @@ public class GlobalProp {
     @Getter
     private static int loaderTimeOutMinute;
     @Getter
-    private static boolean waitPrimeFace;
-    @Getter
-    private static boolean waitAngular;
-    @Getter
     private static String unsafelyTreatInsecure;
     @Getter
     private static String testFileFolder;
     @Getter
-    private static String reportFolder;
-    @Getter
     private static String recordVideo;
     @Getter
     private static String videoFolder;
-    @Getter
-    private static boolean pdfReport;
-    @Setter
-    @Getter
-    private static boolean autoValidJSAlert;
     @Getter
     private static String secret;
     @Getter
@@ -118,7 +103,6 @@ public class GlobalProp {
         Path path = Paths.get("");
 
         startDateTimeSuite = LocalDateTime.now();
-        pdfReport = Boolean.parseBoolean(System.getProperty("pdfReport"));
 
         final java.util.Properties prop = new java.util.Properties();
         try (InputStream input = new FileInputStream("target/test-classes/test.properties")) {
@@ -140,17 +124,11 @@ public class GlobalProp {
             pageLoadTimeOut = Integer.parseInt(prop.getProperty(PAGE_LOAD_TIME_OUT));
             loaderTimeOutMinute = Integer.parseInt(prop.getProperty(LOADER_TIME_OUT_MINUTE));
 
-            waitPrimeFace = Boolean.parseBoolean(prop.getProperty(WAIT_PRIME_FACE));
-            waitAngular = Boolean.parseBoolean(prop.getProperty(WAIT_ANGULAR));
-
             unsafelyTreatInsecure = prop.getProperty(UNSAFELY_TREAT_INSECURE);
 
             testFileFolder = (path.toAbsolutePath() + File.separator + prop.getProperty(TEST_FILE_FOLDER)).replace("/", File.separator);
-            reportFolder = (path.toAbsolutePath() + File.separator + prop.getProperty(REPORT_FOLDER)).replace("/", File.separator);
             recordVideo = prop.getProperty(RECORD_VIDEO);
             videoFolder = (path.toAbsolutePath() + File.separator + prop.getProperty(VIDEO_FOLDER)).replace("/", File.separator);
-
-            autoValidJSAlert = Boolean.parseBoolean(prop.getProperty(AUTO_VALID_JS_ALERT));
 
             suiteMaxTime = Integer.parseInt(prop.getProperty(SUITE_MAX_TIME));
             forceStopOnFail = Boolean.parseBoolean(prop.getProperty(FORCE_STOP_ON_FAIL));

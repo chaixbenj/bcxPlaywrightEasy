@@ -12,8 +12,8 @@ import pages.WebAndMobile.MessagesWebFront;
 public class TC_WebAndMobile extends BaseTest {
 
 
-    @Test
-    public void testExhangeMessages() {
+    @Test(groups = {"tuto2"})
+    public void testExchangeMessages() {
         try {
             AppiumDriver.setupAndroid(this.testContext, "simu_nxs", "C:/temp/apk/app-debug.apk");
 
@@ -42,7 +42,9 @@ public class TC_WebAndMobile extends BaseTest {
             webFront.assertMessage("Papy ?! Pierre, c'est toi ? Le jour où tu commandes les apps natives fais signe gamin");
 
         } catch (Exception e) {
-            this.getReport().log(Reporter.ERROR_STATUS, e);
+            this.getReport().log(Reporter.FAIL_STATUS, e);
+        } finally {
+            endTest();
         }
     }
 

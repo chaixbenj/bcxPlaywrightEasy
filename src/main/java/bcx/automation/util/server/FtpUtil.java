@@ -50,7 +50,7 @@ public class FtpUtil {
                 report.log(Reporter.PASS_STATUS, "FTP.upload " + fichierLocal + " to " + server + " /" + remotePathRep);
             }
         } catch (Exception ex) {
-            report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, "FTP.upload " + fichierLocal + " to " + server + " /" + remotePathRep, ex);
+            report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, "FTP.upload " + fichierLocal + " to " + server + " /" + remotePathRep, ex);
         } finally {
             disconnectChannel();
         }
@@ -92,13 +92,13 @@ public class FtpUtil {
                     report.log(Reporter.PASS_STATUS, action);
                 } else {
                     localPathLogFile = "ERROR FTP.download " + fichier + " file not found";
-                    report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, action + "!! file not found");
+                    report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, action + "!! file not found");
                 }
                 sftpChannel.exit();
             }
         } catch (Exception ex) {
             localPathLogFile = "ERROR FTP.download " + fichier + " to " + server + " /" + remotePathRep;
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, action, ex);
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, action, ex);
         } finally {
             disconnectChannel();
         }
@@ -125,7 +125,7 @@ public class FtpUtil {
                 sftpChannel.exit();
             }
         } catch (Exception ex) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "FTP.removeFileFromArchive " + remoteFile, ex);
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "FTP.removeFileFromArchive " + remoteFile, ex);
         } finally {
             disconnectChannel();
         }
@@ -153,7 +153,7 @@ public class FtpUtil {
             channel.connect();
             return (ChannelSftp) channel;
         } catch (Exception e) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "connection ftp ko", e);
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "connection ftp ko", e);
             return null;
         }
     }

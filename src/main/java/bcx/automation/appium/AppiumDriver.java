@@ -23,10 +23,9 @@ public class AppiumDriver {
             options.setPlatformName("Android");
             options.setAutomationName("UiAutomator2");
             options.setUiautomator2ServerLaunchTimeout(Duration.ofMinutes(2));  // Temps d'attente pour le démarrage du serveur UiAutomator2
-            //options.setDeviceName(name); // si emulateur déjà démarré sinon ligne suivante
-            options.setAvd(name);  // Démarre l'émulateur automatiquement
-            options.setAvdLaunchTimeout(Duration.ofMinutes(2));  // Temps d'attente pour le démarrage de l'AVD
-            options.setAvdReadyTimeout(Duration.ofMinutes(2));  // Temps d'attente pour que l'AVD soit prêt
+            options.setAvd(name);
+            options.setAvdLaunchTimeout(Duration.ofMinutes(2));
+            options.setAvdReadyTimeout(Duration.ofMinutes(2));
             options.setApp(apkPath);
             options.setNoReset(false);
             options.setFullReset(true);
@@ -36,8 +35,9 @@ public class AppiumDriver {
             URL url = new URL(APPIUM_URL);
             AndroidDriver driver = new AndroidDriver(url, options);
             testContext.setAppiumDriver(driver);
+            testContext.getReport().setDriver(driver);
         } catch (Exception e) {
-            testContext.getReport().log(Reporter.ERROR_STATUS_NO_SCREENSHOT, "Erreur au démarrage", e);
+            testContext.getReport().log(Reporter.FAIL_STATUS_NO_SCREENSHOT, "Erreur au démarrage", e);
         }
     }
 }

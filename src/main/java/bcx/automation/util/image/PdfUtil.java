@@ -126,7 +126,7 @@ public class PdfUtil {
             // On attend que les fichiers soient là
         }
         if (!new File(downloadedPdfFilePath).exists()) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "Fichier téléchargé " + downloadedPdfFilePath + " non trouvé");
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "Fichier téléchargé " + downloadedPdfFilePath + " non trouvé");
         } else if (!new File(refPdfFilePath).exists()) {
             report.log(Reporter.WARNING_STATUS_NO_SCREENSHOT, "Fichier référence " + refPdfFilePath + " non trouvé");
         } else {
@@ -147,38 +147,38 @@ public class PdfUtil {
                 if (DataUtil.getFileContent(downloadedPdfFilePath).equals(DataUtil.getFileContent(refPdfFilePath))) {
                     report.log(Reporter.PASS_STATUS, "Le document " + downloadedPdfFilePath + " est identique à la référence");
                     for (int i = 1; i <= nbPageCurrent; i++) {
-                        report.log(Reporter.PASS_STATUS, "Contenu page " + i + " OK<br>" + toString(downloadedPdfFilePath, i));
+                        report.log(Reporter.PASS_STATUS, "Contenu page " + i + " OK  \n" + toString(downloadedPdfFilePath, i));
                     }
                 } else {
                     for (int i = 1; i <= nbPageCommon; i++) {
                         String pageCurrent = toString(downloadedPdfFilePath, i);
                         String pageRef = toString(refPdfFilePath, i);
                         if (pageCurrent.equals(pageRef)) {
-                            report.log(Reporter.PASS_STATUS, "Contenu page " + i + " OK<br>" + pageCurrent);
+                            report.log(Reporter.PASS_STATUS, "Contenu page " + i + " OK  \n" + pageCurrent);
                         } else {
                             if (DateUtil.anonymiseInString(pageCurrent).equals(DateUtil.anonymiseInString(pageRef))) {
                                 DataUtil.diffText(report, pageRef, pageCurrent, Reporter.WARNING_STATUS_NO_SCREENSHOT);
                             } else {
-                                DataUtil.diffText(report, pageRef, pageCurrent, Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT);
+                                DataUtil.diffText(report, pageRef, pageCurrent, Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT);
                             }
                         }
                     }
                     toPng(downloadedPdfFilePath);
                     toPng(refPdfFilePath);
                     if (nbPageRef != nbPageCurrent) {
-                        report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "Le document " + downloadedPdfFilePath + " n'a pas le nombre de pages attendu " + nbPageCurrent + " vs " + nbPageRef);
+                        report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "Le document " + downloadedPdfFilePath + " n'a pas le nombre de pages attendu " + nbPageCurrent + " vs " + nbPageRef);
                     }
                     for (int i = 0; i < nbPageCommon; i++) {
                         try {
                             ImageUtil.compare(report, downloadedPdfFilePath.replace(".pdf", "_" + i + ".png"), refPdfFilePath.replace(".pdf", "_" + i + ".png"), pourcentageDifAdmissible);
                         } catch (Exception e) {
-                            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "Erreur comparaison PDF " + downloadedPdfFilePath, e);
+                            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "Erreur comparaison PDF " + downloadedPdfFilePath, e);
                         }
                     }
                 }
                 new File(downloadedPdfFilePath).delete();
             } catch (Exception e) {
-                report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "Un des fichiers n'est pas un PDF", e);
+                report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "Un des fichiers n'est pas un PDF", e);
             }
         }
     }

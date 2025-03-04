@@ -574,7 +574,7 @@ public class Grid extends BaseElement {
      */
     public void clickCell(int rowNumber, int colNumber) {
         log.info("Table.clickCell ");
-        String result = Reporter.ERROR_STATUS;
+        String result = Reporter.FAIL_STATUS;
         String errorMessage;
         BaseElement cell = getCell(rowNumber, colNumber);
         try {
@@ -609,7 +609,7 @@ public class Grid extends BaseElement {
      */
     public void actionOnRow(int correspondingRow, String action) {
         log.info("Table.actionOnRow ");
-        String result = Reporter.ERROR_STATUS;
+        String result = Reporter.FAIL_STATUS;
         String errorMessage = "ligne " + correspondingRow + NON_TROUVEE;
         BaseElement actionButton = actionElementInRowByNum.injectValues(Map.of(ROW_NUMBER, String.valueOf(correspondingRow), ATTR_ACTION, action));
         try {
@@ -661,7 +661,7 @@ public class Grid extends BaseElement {
      */
     public void actionOnRow(String subStringInCell, int colNumberSubString, String action) {
         log.info("Table.actionOnRow ");
-        String result = Reporter.ERROR_STATUS;
+        String result = Reporter.FAIL_STATUS;
         String errorMessage = "ligne " + subStringInCell + NON_TROUVEE;
         BaseElement actionButton = null;
         try {
@@ -1051,7 +1051,7 @@ public class Grid extends BaseElement {
             String readVal = DoubleUtil.asNum(value);
             return Double.parseDouble(readVal.equals("")?"0":readVal);
         } catch (Exception e) {
-            this.getTestContext().getReport().log(Reporter.ERROR_STATUS, value +  " n'est pas numérique");
+            this.getTestContext().getReport().log(Reporter.FAIL_STATUS, value +  " n'est pas numérique");
             return -1;
         }
     }
@@ -1068,7 +1068,7 @@ public class Grid extends BaseElement {
             String readVal = DoubleUtil.asNum(value);
             return Double.parseDouble(readVal.equals("")?"0":readVal);
         } catch (Exception e) {
-            this.getTestContext().getReport().log(Reporter.ERROR_STATUS, value +  " n'est pas numérique");
+            this.getTestContext().getReport().log(Reporter.FAIL_STATUS, value +  " n'est pas numérique");
             return -1;
         }
     }

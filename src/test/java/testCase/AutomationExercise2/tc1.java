@@ -4,6 +4,8 @@ package testCase.AutomationExercise2;
 import bcx.automation.report.Reporter;
 import bcx.automation.test.BaseTest;
 import bcx.automation.util.data.DataUtil;
+import io.qameta.allure.testng.AllureTestNg;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.AutomationExercise.AutomationExerciseDeleteAccount;
 import pages.AutomationExercise.AutomationExerciseHome;
@@ -11,14 +13,14 @@ import pages.AutomationExercise.AutomationExerciseLogin;
 import pages.AutomationExercise.AutomationExerciseNewUserAccount;
 
 
+@Listeners({AllureTestNg.class})
 public class tc1 extends BaseTest {
-    @Test
+    @Test(groups = {"test"})
     public void run() {
         try {
             String name = "b" + DataUtil.randomAlphaString().toLowerCase();
             String email = name + "@" + name + ".fr";
             String password = name + "A1!";
-
 
             this.getReport().title("Navigation vers la page d'accueil");
             AutomationExerciseHome automationExerciseHome = new AutomationExerciseHome(this.testContext);
@@ -65,8 +67,11 @@ public class tc1 extends BaseTest {
             automationExerciseDeleteAccount.continueButton.click();
 
         } catch (Exception e) {
-            this.getReport().log(Reporter.ERROR_STATUS, e);
+            this.getReport().log(Reporter.FAIL_STATUS, e);
+        } finally {
+            endTest();
         }
 
     }
+
 }

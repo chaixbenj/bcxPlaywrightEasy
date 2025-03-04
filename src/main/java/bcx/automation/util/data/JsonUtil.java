@@ -90,7 +90,7 @@ public class JsonUtil {
         try {
             return new JSONArray(jsString);
         } catch (Exception e) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "ERROR JsonUtil toJSONArray " + jsString, e);
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "ERROR JsonUtil toJSONArray " + jsString, e);
             return null;
         }
     }
@@ -106,7 +106,7 @@ public class JsonUtil {
         try {
             return new JSONObject(jsString);
         } catch (Exception e) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "ERROR JsonUtil.toJSONObject " + jsString, e);
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "ERROR JsonUtil.toJSONObject " + jsString, e);
             return null;
         }
     }
@@ -159,7 +159,7 @@ public class JsonUtil {
             if (!found) throw new Exception();
             return object;
         } catch (Exception e) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "ERROR JsonUtil getJsonObjectInArray " + array + " key:" + key + " value:" + value, e);
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "ERROR JsonUtil getJsonObjectInArray " + array + " key:" + key + " value:" + value, e);
             return new JSONObject("{}");
         }
     }
@@ -193,7 +193,7 @@ public class JsonUtil {
             if (!found) throw new Exception();
             return object;
         } catch (Exception e) {
-            report.log(Reporter.ERROR_NEXT_STATUS_NO_SCREENSHOT, "ERROR JsonUtil getJsonObjectInArray " + array + " values:" + sKeyValues, e);
+            report.log(Reporter.FAIL_NEXT_STATUS_NO_SCREENSHOT, "ERROR JsonUtil getJsonObjectInArray " + array + " values:" + sKeyValues, e);
             return new JSONObject("{}");
         }
     }

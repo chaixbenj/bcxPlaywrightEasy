@@ -53,7 +53,7 @@ public class BDDUtil {
                 connexion = DriverManager.getConnection(bddUrl);
             } catch (Exception e) {
                 if (report != null)
-                    report.log(Reporter.ERROR_STATUS_NO_SCREENSHOT, "BDD CONNEXION FAIL", e);
+                    report.log(Reporter.FAIL_STATUS_NO_SCREENSHOT, "BDD CONNEXION FAIL", e);
                 else
                     Assert.assertEquals(false, true, "BDD CONNEXION FAIL");
             }
@@ -486,7 +486,7 @@ public class BDDUtil {
             if (report != null && logReport) report.log("Error BDDUtil.prepareStatement ", e);
             return null;
         }
-        if (report != null && logReport) report.log(Reporter.PASS_STATUS, "requête : " + query.replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>").replace("\r", "<br>"));
+        if (report != null && logReport) report.log(Reporter.PASS_STATUS, "requête : " + query.replace("<", "&lt;").replace(">", "&gt;").replace("\n", "  \n").replace("\r", "  \r"));
         return statement;
     }
 

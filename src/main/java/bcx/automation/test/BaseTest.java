@@ -8,9 +8,10 @@ import org.testng.annotations.*;
 import bcx.automation.properties.GlobalProp;
 import bcx.automation.report.Reporter;
 import bcx.automation.util.bdd.BDDUtil;
-import bcx.automation.report.HtmlReportToPdf;
 import com.microsoft.playwright.*;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,16 +33,23 @@ public class BaseTest {
     /**
      * Méthode exécutée avant la suite de tests.
      * Charge les propriétés globales et d'environnement.
-     *
-     * @param tc Le contexte de la suite de tests.
      */
     @BeforeSuite(alwaysRun = true)
-    public void beforeSuiteCommon(ITestContext tc) {
+    public void beforeSuiteCommon() {
         try {
-            log.info("Before suite***************************************" + tc.getName());
+            log.info("Before suite***************************************" );
             GlobalProp.load();
             EnvProp.loadProperties(System.getProperty("env"));
-            log.info("END Before suite***************************************" + tc.getName());
+
+            File file = new File("target/allure-results/environment.properties");
+            file.getParentFile().mkdirs();
+            FileWriter writer = new FileWriter(file);
+            writer.write("OS=" + System.getProperty("os.name") + "\n");
+            writer.write("Browser=" + GlobalProp.getBrowser() + "\n");
+            writer.write("Environment=" + System.getProperty("env") + "\n");
+            writer.close();
+
+            log.info("END Before suite***************************************" );
         } catch (Exception e) {
             log.error("beforeSuiteCommon exception", e);
         }
@@ -62,7 +70,7 @@ public class BaseTest {
             testContext = new TestContext();
             testContexts.put(getThreadId(), testContext);
         }
-        testContext.initReport(iTestContext.getName());
+        testContext.initReport();
         reports.put(getThreadId(), testContext.getReport());
         log.info(Thread.currentThread() + " END Before test***************************************" + iTestContext.getName());
     }
@@ -90,7 +98,7 @@ public class BaseTest {
 
         Reporter report = testContext.getReport();
         report.setPage(testContext.getPage());
-        report.initTest(testName);
+        report.initTest();
         if (GlobalProp.isSuiteOverTimeOut()) report.log(Reporter.SKIP_STATUS, "Timeout : la suite a dépassé le temps maximum prévu");
         log.info(Thread.currentThread() + " END Before method***************************************" + testName);
     }
@@ -106,35 +114,7 @@ public class BaseTest {
     public void afterMethodCommon(ITestResult result, Method method) {
         String testName = (method.getDeclaringClass().getSimpleName() + "." + method.getName()).replace(".run", "");
         log.info(Thread.currentThread() + " After method***************************************" + testName);
-        Page page = testContext.getPage();
-        Reporter report = testContext.getReport();
-        Path videoPath = page.video().path();
-        if (GlobalProp.getRecordVideo().equals("always") || ((result.getStatus() != ITestResult.SUCCESS || report.getNbTestError() != 0) && GlobalProp.getRecordVideo().equals("onFailure"))) {
-            report.log("<video width=\"640\" height=\"360\" controls>\n" +
-                    "    <source src=\"" + GlobalProp.getVideoFolder() + videoPath.getFileName() + "\" type=\"video/mp4\">\n" +
-                    "    Votre navigateur ne supporte pas la lecture des vidéos.\n" +
-                    "</video>");
-            videoPaths.put(videoPath.toString(), false);
-        } else {
-            if (videoPath != null && !videoPaths.containsKey(videoPath.toString())) {
-                videoPaths.put(videoPath.toString(), true);
-            }
-        }
-
-        if (GlobalProp.isCloseBrowserAfterMethod()) {
-            testContext.closeBrowser();
-            testContexts.remove(getThreadId());
-            if (videoPath != null) {
-                try {
-                    Files.deleteIfExists(videoPath);
-                    videoPaths.remove(videoPath.toString());
-                } catch (Exception ignore) {
-                    // ignore
-                }
-            }
-        }
-
-        report.endTest(result.isSuccess());
+        if (GlobalProp.isCloseBrowserAfterMethod()) testContext.closeBrowser();
         log.info(Thread.currentThread() + " END After method***************************************" + testName);
     }
 
@@ -163,20 +143,15 @@ public class BaseTest {
 
     /**
      * Méthode exécutée après la suite de tests.
-     * Publie le rapport global et ferme les connexions à la base de données.
+     * Ferme tous les browser/driver, ferme les connexions à la base de données.
      *
-     * @param iTestContext Le contexte de la suite de tests.
      */
     @AfterSuite(alwaysRun = true)
-    public void afterSuiteCommon(ITestContext iTestContext) {
-        log.info(LocalDateTime.now() + " " + Thread.currentThread() + " After suite***************************************" + iTestContext.getName());
-        new Reporter().publishGlobalReport();
+    public void afterSuiteCommon() {
+        log.info(LocalDateTime.now() + " " + Thread.currentThread() + " After suite***************************************");
         testContext.closeBrowser();
         BDDUtil.deconnecterDB();
-        log.info(LocalDateTime.now() + " " + Thread.currentThread() + " END After suite***************************************" + iTestContext.getName());
-        if (GlobalProp.isPdfReport()) {
-            HtmlReportToPdf.generate();
-        }
+        log.info(LocalDateTime.now() + " " + Thread.currentThread() + " END After suite***************************************");
     }
 
     /**
@@ -189,6 +164,36 @@ public class BaseTest {
     }
 
     /**
+     * à appeler à la fin de chaque test : publie les vidéo et vérifie les softAssert
+     */
+    public void endTest() {
+        Page page = testContext.getPage();
+        Reporter report = testContext.getReport();
+        Path videoPath = page.video().path();
+        if (GlobalProp.getRecordVideo().equals("always") || (report.isInError() && GlobalProp.getRecordVideo().equals("onFailure"))) {
+            report.attachVideoToAllure(videoPath.toString());
+            videoPaths.put(videoPath.toString(), false);
+        } else {
+            if (videoPath != null && !videoPaths.containsKey(videoPath.toString())) {
+                videoPaths.put(videoPath.toString(), true);
+            }
+        }
+        if (GlobalProp.isCloseBrowserAfterMethod()) {
+            testContext.closeBrowser();
+            testContexts.remove(getThreadId());
+            if (videoPath != null) {
+                try {
+                    Files.deleteIfExists(videoPath);
+                    videoPaths.remove(videoPath.toString());
+                } catch (Exception ignore) {
+                    // ignore
+                }
+            }
+        }
+        report.softAssertAll();
+    }
+
+    /**
      * Renvoie l'identifiant du thread courant.
      *
      * @return L'identifiant du thread courant.
@@ -196,4 +201,5 @@ public class BaseTest {
     private static String getThreadId() {
         return Thread.currentThread().toString();
     }
+
 }
