@@ -9,7 +9,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import bcx.automation.util.data.DataUtil;
 import com.microsoft.playwright.options.LoadState;
-import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -161,6 +160,7 @@ public class BaseElement {
     public Object find(boolean findPotentialElement) {
         Loader.waitNotVisible();
         report.setCurrentElement(null);
+        report.setPage(this.page);
         try {
             getLocatorInContainer().first().waitFor(new Locator.WaitForOptions().setTimeout(GlobalProp.getTimeOut() * 1000));
             report.setCurrentElement(getLocatorInContainer().first().elementHandle());

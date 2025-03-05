@@ -1,5 +1,6 @@
 package bcx.automation.test;
 
+import bcx.automation.playwright.PlaywrightBrowser;
 import bcx.automation.properties.EnvProp;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.ITestContext;
@@ -16,7 +17,6 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +26,6 @@ import java.util.Map;
 @Slf4j
 public class BaseTest {
     private static Map<String, TestContext> testContexts = new HashMap<>();
-    private static Map<String, Reporter> reports = new HashMap<>();
     private static Map<String, Boolean> videoPaths = new HashMap<>();
     public TestContext testContext;
 
@@ -56,26 +55,6 @@ public class BaseTest {
     }
 
     /**
-     * Méthode exécutée avant chaque test.
-     * Initialise le contexte de test et le rapport.
-     *
-     * @param iTestContext Le contexte du test.
-     */
-    @BeforeTest(alwaysRun = true)
-    public void beforeTestCommon(final ITestContext iTestContext) {
-        log.info(Thread.currentThread() + " Before test***************************************" + iTestContext.getName());
-        if (testContexts.containsKey(getThreadId())) {
-            testContext = testContexts.get(getThreadId());
-        } else {
-            testContext = new TestContext();
-            testContexts.put(getThreadId(), testContext);
-        }
-        testContext.initReport();
-        reports.put(getThreadId(), testContext.getReport());
-        log.info(Thread.currentThread() + " END Before test***************************************" + iTestContext.getName());
-    }
-
-    /**
      * Méthode exécutée avant chaque méthode de test.
      * Initialise la page et le rapport pour la méthode de test.
      *
@@ -86,20 +65,15 @@ public class BaseTest {
     public void beforeMethodCommon(ITestContext iTestContext, Method method) {
         String testName = (method.getDeclaringClass().getSimpleName() + "." + method.getName()).replace(".run", "");
         log.info(Thread.currentThread() + " Before method***************************************" + testName);
-
         if (testContexts.containsKey(getThreadId())) {
             testContext = testContexts.get(getThreadId());
         } else {
             testContext = new TestContext();
             testContexts.put(getThreadId(), testContext);
-            testContext.setReport(reports.get(getThreadId()));
         }
-        if (testContext.getPage() == null) testContext.startNewBrowser();
-
-        Reporter report = testContext.getReport();
-        report.setPage(testContext.getPage());
-        report.initTest();
-        if (GlobalProp.isSuiteOverTimeOut()) report.log(Reporter.SKIP_STATUS, "Timeout : la suite a dépassé le temps maximum prévu");
+        if (testContext.getPage() == null) PlaywrightBrowser.startNewBrowser(testContext);
+        testContext.getReport().initTest();
+        if (GlobalProp.isSuiteOverTimeOut()) testContext.getReport().log(Reporter.SKIP_STATUS, "Timeout : la suite a dépassé le temps maximum prévu");
         log.info(Thread.currentThread() + " END Before method***************************************" + testName);
     }
 
@@ -114,7 +88,7 @@ public class BaseTest {
     public void afterMethodCommon(ITestResult result, Method method) {
         String testName = (method.getDeclaringClass().getSimpleName() + "." + method.getName()).replace(".run", "");
         log.info(Thread.currentThread() + " After method***************************************" + testName);
-        if (GlobalProp.isCloseBrowserAfterMethod()) testContext.closeBrowser();
+        if (GlobalProp.isCloseBrowserAfterMethod()) testContext.closeBrowsersAndDriver();
         log.info(Thread.currentThread() + " END After method***************************************" + testName);
     }
 
@@ -127,7 +101,8 @@ public class BaseTest {
     @AfterTest(alwaysRun = true)
     public void afterTestCommon(ITestContext iTestContext) {
         log.info(Thread.currentThread() + " After test***************************************" + iTestContext.getName());
-        testContext.closeBrowser();
+        if (testContext != null) testContext.closeBrowsersAndDriver();
+        testContext = null;
         testContexts.remove(getThreadId());
         for (Map.Entry<String, Boolean> videoPath : videoPaths.entrySet()) {
             try {
@@ -137,21 +112,9 @@ public class BaseTest {
             } catch (Exception ignore) {
                 // ignore
             }
+            BDDUtil.deconnecterDB();
         }
         log.info(Thread.currentThread() + " END After test***************************************" + iTestContext.getName());
-    }
-
-    /**
-     * Méthode exécutée après la suite de tests.
-     * Ferme tous les browser/driver, ferme les connexions à la base de données.
-     *
-     */
-    @AfterSuite(alwaysRun = true)
-    public void afterSuiteCommon() {
-        log.info(LocalDateTime.now() + " " + Thread.currentThread() + " After suite***************************************");
-        testContext.closeBrowser();
-        BDDUtil.deconnecterDB();
-        log.info(LocalDateTime.now() + " " + Thread.currentThread() + " END After suite***************************************");
     }
 
     /**
@@ -179,7 +142,7 @@ public class BaseTest {
             }
         }
         if (GlobalProp.isCloseBrowserAfterMethod()) {
-            testContext.closeBrowser();
+            testContext.closeBrowsersAndDriver();
             testContexts.remove(getThreadId());
             if (videoPath != null) {
                 try {

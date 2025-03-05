@@ -23,7 +23,7 @@ public class TC_WebAndMobile extends BaseTest {
             //On instancie notre page android messagerie
             MessagesAndroid android = new MessagesAndroid(this.testContext);
 
-            //Playwright envoie un sur le site Web
+            //Playwright envoie un message sur le site Web
             webFront.sendMessage("Y'a quelqu'un sur le site ?");
 
             //Appium+Selenium vérifie la récéption du message sur l'app Android et répond
@@ -31,11 +31,11 @@ public class TC_WebAndMobile extends BaseTest {
             android.sendMessage("Moi, je suis sur l'app android");
 
             //Playwright vérifie la récéption du message sur le site Web et répond
-            webFront.assertMessage("Moi, je suis sur l'app android FAIL"); //------------On fail volontairement la vérif web
+            webFront.assertMessage("Moi, je suis sur l'app android");
             webFront.sendMessage("T'es un robot ? Qui te commande ?");
 
             //Appium+Selenium vérifie la récéption du message sur l'app Android et répond
-            android.assertMessage("T'es un robot ? Qui te commande ? FAIL"); //------------On fail volontairement la vérif android
+            android.assertMessage("T'es un robot ? Qui te commande ?");
             android.sendMessage("APPIUM et SELENIUM. Et toi t'es un robot SELENIUM ?");
 
             //Playwright vérifie la récéption du message sur le site Web et répond

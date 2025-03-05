@@ -42,12 +42,6 @@ public abstract class BasePage {
         }
     }
 
-
-
-
-
-
-
     /**
      * Vérifie si le clavier est affiché.
      * @return true si le clavier est visible, false sinon.

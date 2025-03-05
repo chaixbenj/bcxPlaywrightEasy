@@ -517,6 +517,7 @@ public abstract class BaseElement {
             // ignore
         }
         report.setPlaywrightCmd(false);
+        report.setDriver(driver);
         return monElement;
     }
 
@@ -600,6 +601,7 @@ public abstract class BaseElement {
             }
         }
         report.setPlaywrightCmd(false);
+        report.setDriver(driver);
         return monElement;
     }
 
@@ -638,6 +640,7 @@ public abstract class BaseElement {
             monElement = findElement(0);
         }
         report.setPlaywrightCmd(false);
+        report.setDriver(driver);
         return monElement;
     }
 

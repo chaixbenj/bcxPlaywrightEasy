@@ -16,6 +16,12 @@ public class AppiumDriver {
 
     public static final String APPIUM_URL = "http://127.0.0.1:4723/";
 
+    /**
+     * demarre le driver Appium sur android
+     * @param testContext
+     * @param name
+     * @param apkPath
+     */
     public static void setupAndroid(TestContext testContext, String name, String apkPath) {
         try {
             testContext.getReport().log(Reporter.INFO_STATUS, "Démarrage du driver Android " + name + " sur apk" + apkPath);
