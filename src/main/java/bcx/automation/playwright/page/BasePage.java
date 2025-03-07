@@ -2,6 +2,7 @@ package bcx.automation.playwright.page;
 
 import bcx.automation.playwright.element.BaseElement;
 import bcx.automation.test.TestContext;
+import bcx.automation.util.TimeWait;
 import bcx.automation.util.app.ConnectedUserUtil;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
@@ -13,7 +14,6 @@ import bcx.automation.report.Reporter;
 import bcx.automation.util.data.DataSetUtil;
 
 import java.net.URLEncoder;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -147,6 +147,7 @@ public abstract class BasePage {
         return false;
     }
 
+
     /**
      * Définit les valeurs des éléments à partir d'un fichier de données.
      *
@@ -166,21 +167,7 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void setValue(DataSetUtil dataSet) {
-        report.startStep(this.getClass().getSimpleName() + " setValue");
-        LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
-        for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
-            String key = String.valueOf(jdd.getKey());
-            String value = String.valueOf(jdd.getValue());
-            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
-                if (elements.containsKey(key)) {
-                    elements.get(key).setValue(value);
-                } else {
-                    log.info("Element " + key + " not found");
-                    this.report.log(Reporter.FAIL_STATUS, "Element " + key + " not found");
-                }
-            }
-        }
-        report.stopStep();
+        performAction(dataSet, "setValue");
     }
 
     /**
@@ -202,21 +189,7 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void assertValue(DataSetUtil dataSet) {
-        report.startStep(this.getClass().getSimpleName() + " assertValue");
-        LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
-        for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
-            String key = String.valueOf(jdd.getKey());
-            String value = String.valueOf(jdd.getValue());
-            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
-                if (elements.containsKey(key)) {
-                    elements.get(key).assertValue(value);
-                } else {
-                    log.info("Element " + key + " not found");
-                    this.report.log(Reporter.FAIL_STATUS, "Element " + key + " not found");
-                }
-            }
-        }
-        report.stopStep();
+        performAction(dataSet, "assertValue");
     }
 
     /**
@@ -238,21 +211,7 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void assertVisible(DataSetUtil dataSet) {
-        report.startStep(this.getClass().getSimpleName() + " assertVisible");
-        LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
-        for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
-            String key = String.valueOf(jdd.getKey());
-            String value = String.valueOf(jdd.getValue());
-            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
-                if (elements.containsKey(key)) {
-                    elements.get(key).assertVisible(Boolean.parseBoolean(value));
-                } else {
-                    log.info("Element " + key + " not found");
-                    this.report.log(Reporter.FAIL_STATUS, "Element " + key + " not found");
-                }
-            }
-        }
-        report.stopStep();
+        performAction(dataSet, "assertVisible");
     }
 
     /**
@@ -274,21 +233,7 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void assertEnabled(DataSetUtil dataSet) {
-        report.startStep(this.getClass().getSimpleName() + " assertEnabled");
-        LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
-        for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
-            String key = String.valueOf(jdd.getKey());
-            String value = String.valueOf(jdd.getValue());
-            if (!key.equals(TEST_ID) && !value.equals("N/A")) {
-                if (elements.containsKey(key)) {
-                    elements.get(key).assertEnabled(Boolean.parseBoolean(value));
-                } else {
-                    log.info("Element " + key + " not found");
-                    this.report.log(Reporter.FAIL_STATUS, "Element " + key + " not found");
-                }
-            }
-        }
-        report.stopStep();
+        performAction(dataSet, "assertEnabled");
     }
 
     /**
@@ -310,14 +255,38 @@ public abstract class BasePage {
      * @param dataSet L'utilitaire de jeu de données.
      */
     public void assertRequired(DataSetUtil dataSet) {
-        report.startStep(this.getClass().getSimpleName() + " assertRequired");
+        performAction(dataSet, "assertRequired");
+    }
+
+    // Méthode générique pour effectuer une action sur les éléments
+    private void performAction(DataSetUtil dataSet, String action) {
+        report.startStep(this.getClass().getSimpleName() + " " + action);
         LinkedHashMap<String, String> jddHash = dataSet.getKeyAndValues();
         for (Map.Entry<String, String> jdd : jddHash.entrySet()) {
             String key = String.valueOf(jdd.getKey());
             String value = String.valueOf(jdd.getValue());
             if (!key.equals(TEST_ID) && !value.equals("N/A")) {
                 if (elements.containsKey(key)) {
-                    elements.get(key).assertRequired(Boolean.parseBoolean(value));
+                    switch (action) {
+                        case "setValue":
+                            elements.get(key).setValue(value);
+                            break;
+                        case "assertValue":
+                            elements.get(key).assertValue(value);
+                            break;
+                        case "assertVisible":
+                            elements.get(key).assertVisible(Boolean.parseBoolean(value));
+                            break;
+                        case "assertEnabled":
+                            elements.get(key).assertEnabled(Boolean.parseBoolean(value));
+                            break;
+                        case "assertRequired":
+                            elements.get(key).assertRequired(Boolean.parseBoolean(value));
+                            break;
+                        default:
+                            log.info("Action " + action + " not recognized");
+                            break;
+                    }
                 } else {
                     log.info("Element " + key + " not found");
                     this.report.log(Reporter.FAIL_STATUS, "Element " + key + " not found");
@@ -353,8 +322,8 @@ public abstract class BasePage {
         }
         BrowserContext browserContext = this.testContext.getBrowserContext();
         List<Page> allTabs = browserAllTabs.get(browserContext);
-        LocalDateTime now = LocalDateTime.now();
-        while (now.plusSeconds(60).isAfter(LocalDateTime.now())) {
+        TimeWait t = new TimeWait();
+        while (t.notOver(60)) {
             for (Page actualTab : browserContext.pages()) {
                 if (!allTabs.contains(actualTab)) {
                     try {

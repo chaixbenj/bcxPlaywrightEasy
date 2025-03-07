@@ -13,7 +13,7 @@ import pages.AutomationExercise.AutomationExerciseNewUserAccount;
 
 
 public class tc1 extends BaseTest {
-    @Test(groups = {"test"})
+    @Test(groups = {"test2"})
     @Epic("Gestion des utilisateurs")
     @Feature("Création d'un compte")
     @Story("Création d'un compte cas passant")

@@ -3,9 +3,9 @@ package bcx.automation.util.server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
+import bcx.automation.util.TimeWait;
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSchException;
 
@@ -87,13 +87,13 @@ public class BatchUtil extends ShellUtil {
     }
 
     private static String waitForBatchEnd(Reporter report, Long timeOut) throws IOException {
-        LocalDateTime start = LocalDateTime.now();
+        TimeWait t = new TimeWait();
         InputStream inps = channel.getInputStream();
         byte[] tmp = new byte[1024];
         String logBatch = "";
         String logBatchComplete = "";
         int i;
-        while (start.plusSeconds(timeOut).isAfter(LocalDateTime.now()) && !logBatch.endsWith("]$ ")) {
+        while (t.notOver(60) && !logBatch.endsWith("]$ ")) {
             if (inps.available() > 0) {
                 i = inps.read(tmp, 0, 1024);
                 if (i < 0) break;

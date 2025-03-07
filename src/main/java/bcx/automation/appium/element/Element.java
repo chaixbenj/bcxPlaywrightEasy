@@ -3,6 +3,7 @@ package bcx.automation.appium.element;
 import bcx.automation.properties.GlobalProp;
 import bcx.automation.report.Reporter;
 import bcx.automation.test.TestContext;
+import bcx.automation.util.TimeWait;
 import bcx.automation.util.data.DataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -36,30 +37,6 @@ public class Element extends BaseElement {
      */
     public Element(Element element) {
         super(element);
-    }
-
-    /**
-     * enregistre l'heure de début d'une action pour pouvoir lui appliquer un timeout
-     * @param from
-     */
-    public void startTry(String from) {
-        dateStartSearch.remove(from);
-        dateStartSearch.put(from, LocalDateTime.now());
-    }
-
-    /**
-     * indique si le temps imparti timeout pour l'action est écoulé
-     * @param timeout
-     * @param from
-     * @return
-     */
-    public boolean stopTry(int timeout, String from) {
-        try {
-            if (dateStartSearch.get(from) == null) dateStartSearch.put(from, LocalDateTime.now());
-            return (this.getReport().isTimePreviousLogOlderThan(500) || dateStartSearch.get(from).plusSeconds(timeout).isBefore(LocalDateTime.now()));
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     /**
@@ -158,9 +135,9 @@ public class Element extends BaseElement {
         int attempts = 0;
 
         WebElement element = findElementEnabled();
-        startTry(action);
+        TimeWait t = new TimeWait();
 
-        while (!result.equals(Reporter.PASS_STATUS) && !stopTry(GlobalProp.getTimeOut(), action)) {
+        while (!result.equals(Reporter.PASS_STATUS) && t.notOver(GlobalProp.getTimeOut())) {
             try {
                 if (attempts > 0) {
                     Thread.sleep(500);

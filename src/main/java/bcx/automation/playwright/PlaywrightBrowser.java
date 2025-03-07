@@ -2,6 +2,7 @@ package bcx.automation.playwright;
 
 import bcx.automation.properties.GlobalProp;
 import bcx.automation.test.TestContext;
+import bcx.automation.util.TimeWait;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.Proxy;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +38,8 @@ public class PlaywrightBrowser {
     public static void startNewBrowser(TestContext testContext, String proxy, String locale, String browserType, String credentialUser, String credentialPassword) {
         Playwright playwright = Playwright.create();
         boolean browserOk = false;
-        LocalDateTime now = LocalDateTime.now();
-        while (!browserOk && now.plusSeconds(5).isAfter(LocalDateTime.now())) {
+        TimeWait t = new TimeWait();
+        while (!browserOk && t.notOver(5)) {
             try {
                 browserType = browserType == null ? GlobalProp.getBrowser() : browserType;
                 locale = locale == null ? "fr-FR" : locale;

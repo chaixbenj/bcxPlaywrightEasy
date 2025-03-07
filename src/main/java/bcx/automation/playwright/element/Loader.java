@@ -1,10 +1,10 @@
 package bcx.automation.playwright.element;
 
+import bcx.automation.util.TimeWait;
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import lombok.extern.slf4j.Slf4j;
 import bcx.automation.properties.GlobalProp;
-import java.time.LocalDateTime;
 
 /**
  * classe permettant de gérer les asynchronismes et l'attente de disparition des loaders
@@ -43,9 +43,9 @@ public class Loader {
         if (GlobalProp.isUseLoader()) {
             try {
                 if (loader1 != null) {
-                    LocalDateTime dateStartSearch = LocalDateTime.now();
+                    TimeWait t = new TimeWait();
                     ElementHandle loader = loader1.first().elementHandle(new Locator.ElementHandleOptions().setTimeout(timeout == 0 ? 100 : timeout * 1000));
-                    while (loader != null && loader.isVisible() && dateStartSearch.plusMinutes(GlobalProp.getLoaderTimeOutMinute()).isAfter(LocalDateTime.now())) {
+                    while (loader != null && loader.isVisible() && t.notOver(GlobalProp.getLoaderTimeOutMinute()*60)) {
                         loader = loader1.first().elementHandle(new Locator.ElementHandleOptions().setTimeout(1000));
                         loaderAppears = true;
                     }

@@ -127,7 +127,7 @@ public class BaseTest {
     }
 
     /**
-     * à appeler à la fin de chaque test : publie les vidéo et vérifie les softAssert
+     * à appeler à la fin de chaque test : publie les vidéos et vérifie les softAssert
      */
     public void endTest() {
         Page page = testContext.getPage();

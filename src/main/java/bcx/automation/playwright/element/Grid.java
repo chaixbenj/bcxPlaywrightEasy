@@ -1,6 +1,7 @@
 package bcx.automation.playwright.element;
 
 import bcx.automation.test.TestContext;
+import bcx.automation.util.TimeWait;
 import com.microsoft.playwright.Locator;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -699,9 +700,9 @@ public class Grid extends BaseElement {
     public void assertContains(String subStringInRow) {
         String action = "assertContains";
         boolean contains = this.contains(subStringInRow);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (!contains && ! stopTry(timeout,action)) {
+        while (!contains && t.notOver(timeout)) {
             contains = this.contains(subStringInRow);
             timeout = TIME_OUT_ASSERTION;
         }
@@ -716,9 +717,9 @@ public class Grid extends BaseElement {
     public void assertNotContains(String subStringInRow) {
         String action = "assertNotContains";
         boolean contains = this.contains(subStringInRow);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (contains && ! stopTry(timeout,action)) {
+        while (contains && t.notOver(timeout)) {
             contains = this.contains(subStringInRow);
             timeout = TIME_OUT_ASSERTION;
         }
@@ -752,9 +753,9 @@ public class Grid extends BaseElement {
         String status = Reporter.FAIL_NEXT_STATUS;
         BaseElement row = getRow(values);
         boolean exists = row.exists();
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (exists!=contains && ! stopTry(timeout,action)) {
+        while (exists!=contains && t.notOver(timeout)) {
             exists = row.exists();
             timeout = TIME_OUT_ASSERTION;
         }
@@ -774,9 +775,9 @@ public class Grid extends BaseElement {
         log.info(action);
         String status = Reporter.PASS_STATUS;
         String value = getRowValue(rowNumber);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (!value.equals(DataUtil.normalizeSpace(rowValue)) && ! stopTry(timeout,action)) {
+        while (!value.equals(DataUtil.normalizeSpace(rowValue)) && t.notOver(timeout)) {
             value = getRowValue(rowNumber);
             timeout = TIME_OUT_ASSERTION;
         }
@@ -1095,10 +1096,10 @@ public class Grid extends BaseElement {
      */
     public void assertCellValueAsDoubleEquals(String subStringInRow, int colNumber, String cellValue) {
         String status = Reporter.PASS_STATUS;
-        startTry("assertCellValueAsDoubleEquals");
+        TimeWait t = new TimeWait();
         Double expectedValue = Double.parseDouble(DoubleUtil.asNum(cellValue));
         Double value = getCellValueAsDouble(subStringInRow, colNumber);
-        while (Math.abs(expectedValue-value)>=0.01 && ! stopTry(30,"assertCellValueAsDoubleEquals")) {
+        while (Math.abs(expectedValue-value)>=0.01 && t.notOver(30)) {
             value = getCellValueAsDouble(subStringInRow, colNumber);
         }
         if (Math.abs(expectedValue-value)>=0.01) {
@@ -1127,10 +1128,10 @@ public class Grid extends BaseElement {
      */
     public void assertCellValueAsDoubleEquals(String[] subStringsInRow, int colNumber, String cellValue) {
         String status = Reporter.PASS_STATUS;
-        startTry("assertCellValueEquals");
+        TimeWait t = new TimeWait();
         Double expectedValue = Double.parseDouble(DoubleUtil.asNum(cellValue));
         Double value = getCellValueAsDouble(subStringsInRow, colNumber);
-        while (Math.abs(expectedValue-value)>=0.01 && ! stopTry(30,"assertCellValueEquals")) {
+        while (Math.abs(expectedValue-value)>=0.01 && ! t.notOver(30)) {
             value = getCellValueAsDouble(subStringsInRow, colNumber);
         }
         if (Math.abs(expectedValue-value)>=0.01) {
@@ -1253,9 +1254,9 @@ public class Grid extends BaseElement {
     public void assertContains(String subStringInCell, int colNumberSubString) {
         String action = "assertContains";
         boolean contains = columnContains(subStringInCell, colNumberSubString);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (!contains && ! stopTry(timeout,action)) {
+        while (!contains && t.notOver(timeout)) {
             contains = columnContains(subStringInCell, colNumberSubString);
             timeout = TIME_OUT_ASSERTION;
         }
@@ -1280,9 +1281,9 @@ public class Grid extends BaseElement {
     public void assertNotContains(String subStringInCell, int colNumberSubString) {
         String action = "assertNotContains";
         boolean contains = columnContains(subStringInCell, colNumberSubString);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (contains && ! stopTry(timeout,action)) {
+        while (contains && t.notOver(timeout)) {
             contains = columnContains(subStringInCell, colNumberSubString);
             timeout = TIME_OUT_ASSERTION;
         }
@@ -1315,9 +1316,9 @@ public class Grid extends BaseElement {
         log.info(action);
         String status = Reporter.PASS_STATUS;
         String value = getCellAttribute(subStringInCell, colNumberSubString, colNumberCellToRead, attr);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (!value.contains(attributeValue) && ! stopTry(timeout,action)) {
+        while (!value.contains(attributeValue) && t.notOver(timeout)) {
             value = getCellAttribute(subStringInCell, colNumberSubString, colNumberCellToRead, attr);
             timeout = TIME_OUT_ASSERTION;
         }
@@ -1353,9 +1354,9 @@ public class Grid extends BaseElement {
         log.info(action);
         String status = Reporter.PASS_STATUS;
         String value = getCellAttribute(subStringInCell,colNumberSubString, colNumberCellToRead, attr);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (value.contains(attributeValue) && ! stopTry(timeout,action)) {
+        while (value.contains(attributeValue) && t.notOver(timeout)) {
             value = getCellAttribute(subStringInCell,colNumberSubString, colNumberCellToRead, attr);
             timeout = TIME_OUT_ASSERTION;
         }
@@ -1386,9 +1387,9 @@ public class Grid extends BaseElement {
         log.info(action);
         String status = Reporter.PASS_STATUS;
         String value = getFooterCellValue(colNumber);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (!value.equals(DataUtil.normalizeSpace(cellValue)) && ! stopTry(timeout,action)) {
+        while (!value.equals(DataUtil.normalizeSpace(cellValue)) && t.notOver(timeout)) {
             value = getFooterCellValue(colNumber);
             timeout = TIME_OUT_ASSERTION;
         }
@@ -1433,9 +1434,9 @@ public class Grid extends BaseElement {
         String status = Reporter.PASS_STATUS;
         Double expectedValue = Double.parseDouble(cellValue.trim().replace("€","").replace(" ","").replace("&nbsp;","").replace(",","."));
         Double value = getFooterCellValueAsDouble(colNumber);
-        startTry(action);
+        TimeWait t = new TimeWait();
         int timeout = GlobalProp.getAssertTimeOut(this.getReport());
-        while (!expectedValue.equals(value) && ! stopTry(timeout,action)) {
+        while (!expectedValue.equals(value) && t.notOver(timeout)) {
             value = getFooterCellValueAsDouble(colNumber);
             timeout = TIME_OUT_ASSERTION;
         }

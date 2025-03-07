@@ -14,9 +14,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -50,7 +48,6 @@ public class BaseElement {
     @Getter
     private String potentialType;
     private String potentialElement;
-    private final HashMap<String, LocalDateTime> dateStartSearch = new HashMap<>();
 
     /**
      * Constructeur de la classe BaseElement.
@@ -72,32 +69,6 @@ public class BaseElement {
         this.container = page;
         this.locatorInContainer = locator;
         this.potentialType = "*";
-    }
-
-    /**
-     * Enregistre l'heure de début d'une action pour pouvoir lui appliquer un timeout.
-     *
-     * @param from La source de l'action.
-     */
-    public void startTry(String from) {
-        dateStartSearch.remove(from);
-        dateStartSearch.put(from, LocalDateTime.now());
-    }
-
-    /**
-     * Indique si le temps imparti pour l'action est écoulé.
-     *
-     * @param timeout Le timeout en secondes.
-     * @param from La source de l'action.
-     * @return Vrai si le temps est écoulé, faux sinon.
-     */
-    public boolean stopTry(int timeout, String from) {
-        try {
-            if (dateStartSearch.get(from) == null) dateStartSearch.put(from, LocalDateTime.now());
-            return (report.isTimePreviousLogOlderThan(500) || dateStartSearch.get(from).plusSeconds(timeout).isBefore(LocalDateTime.now()));
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     /**

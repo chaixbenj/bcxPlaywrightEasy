@@ -1,6 +1,7 @@
 package bcx.automation.playwright.element;
 
 import bcx.automation.test.TestContext;
+import bcx.automation.util.TimeWait;
 import com.microsoft.playwright.Locator;
 import bcx.automation.properties.GlobalProp;
 import bcx.automation.report.Reporter;
@@ -75,8 +76,8 @@ public class ElementList extends BaseElement {
                 } else {
                     BaseElement optionEl = getOptionElement(option);
                     boolean isSelected = this.getValue().contains(DataUtil.normalizeSpace(option)) || optionEl.getAttribute(SELECTED).equals("true");
-                    startTry(action);
-                    while (!isSelected && !stopTry(GlobalProp.getTimeOut(), action)) {
+                    TimeWait t = new TimeWait();
+                    while (!isSelected && t.notOver(GlobalProp.getTimeOut())) {
 
                         this.click();
                         optionEl.click();

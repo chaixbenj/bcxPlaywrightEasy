@@ -480,7 +480,7 @@ public class Reporter {
      * @param messageLog Le message à loguer.
      */
     public void title(String messageLog) {
-        log(Reporter.INFO_STATUS, messageLog.toUpperCase());
+        log(Reporter.INFO_STATUS, " \uD83C\uDF1F " + messageLog.toUpperCase() + "    \uD83C\uDF1F");
     }
 
     /**
@@ -814,16 +814,6 @@ public class Reporter {
         messageLog += (actual != null ? ", constaté: >" + actual + "< " : " ");
         messageLog += (message != null ? message : "");
         return messageLog;
-    }
-
-    /**
-     * Indique si le précédent log date de plus de x secondes.
-     *
-     * @param second Le nombre de secondes.
-     * @return Vrai si le précédent log date de plus de x secondes, faux sinon.
-     */
-    public boolean isTimePreviousLogOlderThan(int second) {
-        return LocalDateTime.now().isAfter(timePreviousLog.plusSeconds(second));
     }
 
 }
