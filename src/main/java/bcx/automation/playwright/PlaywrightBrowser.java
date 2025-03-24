@@ -5,8 +5,6 @@ import bcx.automation.test.TestContext;
 import bcx.automation.util.TimeWait;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.Proxy;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Paths;
@@ -86,6 +84,7 @@ public class PlaywrightBrowser {
 
                 Page page = browserContext.newPage();
 
+                testContext.setPlaywright(playwright);
                 testContext.setBrowser(browser);
                 testContext.setBrowserContext(browserContext);
                 testContext.setPage(page);

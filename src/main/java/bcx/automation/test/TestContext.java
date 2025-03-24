@@ -17,6 +17,8 @@ import java.util.List;
 @Slf4j
 public class TestContext {
 
+    @Setter
+    private  Playwright playwright;
     @Getter
     @Setter
     private Browser browser;
@@ -42,6 +44,7 @@ public class TestContext {
      * Constructeur par défaut de la classe TestContext.
      */
     public TestContext() {
+        this.playwright = null;
         this.browser = null;
         this.browserContext = null;
         this.page = null;
@@ -69,6 +72,7 @@ public class TestContext {
         closeOtherContexts();
         if (browser != null) {
             browser.close();
+            playwright.close();
         }
         browser = null;
         browserContext = null;

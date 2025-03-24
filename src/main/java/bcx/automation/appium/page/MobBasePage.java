@@ -1,6 +1,6 @@
 package bcx.automation.appium.page;
 
-import bcx.automation.appium.element.Element;
+import bcx.automation.appium.element.MobElement;
 import bcx.automation.report.Reporter;
 import bcx.automation.test.TestContext;
 import io.appium.java_client.AppiumDriver;
@@ -11,7 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.LinkedHashMap;
 
-public abstract class BasePage {
+public abstract class MobBasePage {
     @Getter
     private final TestContext testContext;
     @Getter
@@ -21,13 +21,13 @@ public abstract class BasePage {
     private IOSDriver iosDriver = null;
     private boolean isAndroid;
 
-    public LinkedHashMap<String, Element> elements = new LinkedHashMap<>();
+    public LinkedHashMap<String, MobElement> elements = new LinkedHashMap<>();
     /**
      * Constructeur de la classe BasePage.
      *
      * @param testContext Le contexte de test.
      */
-    protected BasePage(TestContext testContext) {
+    protected MobBasePage(TestContext testContext) {
         this.testContext = testContext;
         this.report = testContext.getReport();
         AppiumDriver appiumDriver = testContext.getAppiumDriver();
@@ -67,7 +67,7 @@ public abstract class BasePage {
      * Affiche le clavier en cliquant sur un champ texte.
      * @param element L'élément du champ de saisie.
      */
-    public void showKeyboard(Element element) {
+    public void showKeyboard(MobElement element) {
         element.click();
     }
 
@@ -77,7 +77,7 @@ public abstract class BasePage {
      * @param element Champ de texte cible.
      * @param text Texte à saisir.
      */
-    public void typeUsingKeyboard(Element element, String text) {
+    public void typeUsingKeyboard(MobElement element, String text) {
         showKeyboard(element);
 
         Actions actions = new Actions(isAndroid ? androidDriver : iosDriver);

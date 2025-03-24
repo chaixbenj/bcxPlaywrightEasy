@@ -1,15 +1,15 @@
 package pages.WebAndMobile;
 
-import bcx.automation.appium.page.BasePage;
-import bcx.automation.appium.element.Element;
+import bcx.automation.appium.page.MobBasePage;
+import bcx.automation.appium.element.MobElement;
 import bcx.automation.test.TestContext;
 import org.openqa.selenium.By;
 
 
-public class MessagesAndroid extends BasePage {
-    public Element message = new Element(this.getTestContext(), "message {0}",  By.xpath("//android.widget.TextView[@resource-id='com.example.mymessageapp:id/textViewMessage' and @text=\"{0}\"]"));
-    public Element newmessage = new Element(this.getTestContext(), "Écris ton message ici",  By.id("com.example.mymessageapp:id/editTextMessage")); //textarea
-    public Element send = new Element(this.getTestContext(), "Envoyer", By.id("com.example.mymessageapp:id/buttonSend")); //button
+public class MessagesAndroid extends MobBasePage {
+    public MobElement message = new MobElement(this.getTestContext(), "message {0}",  By.xpath("//android.widget.TextView[@resource-id='com.example.mymessageapp:id/textViewMessage' and @text=\"{0}\"]"));
+    public MobElement newmessage = new MobElement(this.getTestContext(), "Écris ton message ici",  By.id("com.example.mymessageapp:id/editTextMessage")); //textarea
+    public MobElement send = new MobElement(this.getTestContext(), "Envoyer", By.id("com.example.mymessageapp:id/buttonSend")); //button
 
     public MessagesAndroid(TestContext testContext) {
         super(testContext);

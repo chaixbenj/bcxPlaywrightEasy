@@ -28,7 +28,7 @@ import static org.openqa.selenium.support.locators.RelativeLocator.with;
  *
  */
 @Slf4j
-public abstract class BaseElement {
+public abstract class MobBaseElement {
     public static final String ELEMENT_NOT_FOUND_SUITE_TIME_OVER_LIMIT = "Element not found, suite time over limit";
     public static final String NORMALIZE_SPACE_TEXT = "//*[normalize-space(text())=\"";
     @Getter
@@ -50,22 +50,22 @@ public abstract class BaseElement {
     @Getter
     private By initialLocator;
     @Getter
-    private Element container;
+    private MobElement container;
     @Getter
-    private Element labelForElement;
+    private MobElement labelForElement;
     @Setter
     @Getter
     private String labelForIdSuffix;
     @Getter
-    private Element nearElement;
+    private MobElement nearElement;
     @Getter
-    private Element aboveElement;
+    private MobElement aboveElement;
     @Getter
-    private Element belowElement;
+    private MobElement belowElement;
     @Getter
-    private Element toRightOfElement;
+    private MobElement toRightOfElement;
     @Getter
-    private Element toLeftOfElement;
+    private MobElement toLeftOfElement;
 
 
     private static final String BY_XPATH_LOC_START = "By.xpath: ";
@@ -82,7 +82,7 @@ public abstract class BaseElement {
      * @param elementName    : nom / description de l'élément
      * @param elementLocator : information d'identification de l'élément. Exemple : By.id("idelement"), By.name("elementName"), By.xpath("//a[@class='toto']")
      */
-    protected BaseElement(TestContext testContext, String elementName, By elementLocator) {
+    protected MobBaseElement(TestContext testContext, String elementName, By elementLocator) {
         this.testContext = testContext;
         this.report = testContext.getReport();
         this.driver = testContext.getAppiumDriver();
@@ -104,7 +104,7 @@ public abstract class BaseElement {
      * constructeur de l'élément
      * @param element    : nouvel élément à partir d'un élément existant
      */
-    protected BaseElement(Element element) {
+    protected MobBaseElement(MobElement element) {
         this.testContext = element.getTestContext();
         this.report = testContext.getReport();
         this.driver = testContext.getAppiumDriver();
@@ -162,7 +162,7 @@ public abstract class BaseElement {
      * @param containerElement : élément contenant l'élément recherché
      * @return l'élément recherché dans le container
      */
-    public Element setContainer(Element containerElement) {
+    public MobElement setContainer(MobElement containerElement) {
         container = containerElement;
         String locatorPath = locator.toString();
         if (container != null && locatorPath.contains(BY_XPATH_LOC_START)) {
@@ -174,7 +174,7 @@ public abstract class BaseElement {
                 locator = By.xpath("(." + locatorPath.substring(1));
             }
         }
-        return (Element)this;
+        return (MobElement)this;
     }
 
     /**
@@ -182,7 +182,7 @@ public abstract class BaseElement {
      *
      * @return l'élément recherché dans le container
      */
-    public Element resetContainer() {
+    public MobElement resetContainer() {
         container = null;
         String locatorPath = locator.toString();
         if (locatorPath.contains(BY_XPATH_LOC_START)) {
@@ -194,7 +194,7 @@ public abstract class BaseElement {
                 locator = By.xpath("(" + locatorPath.substring(2));
             }
         }
-        return (Element)this;
+        return (MobElement)this;
     }
 
     /**
@@ -202,18 +202,18 @@ public abstract class BaseElement {
      * @param objectStringElementOrBy
      * @return
      */
-    public Element near(Object objectStringElementOrBy) {
+    public MobElement near(Object objectStringElementOrBy) {
         switch (objectStringElementOrBy) {
             case String string:
-                this.nearElement = new Element(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
+                this.nearElement = new MobElement(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
                 break;
             case By by:
-                this.nearElement = new Element(this.testContext, "", by);
+                this.nearElement = new MobElement(this.testContext, "", by);
                 break;
             default:
-                this.nearElement = (Element) objectStringElementOrBy;
+                this.nearElement = (MobElement) objectStringElementOrBy;
         }
-        return (Element)this;
+        return (MobElement)this;
     }
 
     /**
@@ -221,18 +221,18 @@ public abstract class BaseElement {
      * @param objectStringElementOrBy
      * @return
      */
-    public Element above(Object objectStringElementOrBy) {
+    public MobElement above(Object objectStringElementOrBy) {
         switch (objectStringElementOrBy) {
             case String string:
-                this.aboveElement = new Element(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
+                this.aboveElement = new MobElement(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
                 break;
             case By by:
-                this.aboveElement = new Element(this.testContext, "", by);
+                this.aboveElement = new MobElement(this.testContext, "", by);
                 break;
             default:
-                this.aboveElement = (Element) objectStringElementOrBy;
+                this.aboveElement = (MobElement) objectStringElementOrBy;
         }
-        return (Element)this;
+        return (MobElement)this;
     }
 
     /**
@@ -240,18 +240,18 @@ public abstract class BaseElement {
      * @param objectStringElementOrBy
      * @return
      */
-    public Element below(Object objectStringElementOrBy) {
+    public MobElement below(Object objectStringElementOrBy) {
         switch (objectStringElementOrBy) {
             case String string:
-                this.belowElement = new Element(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
+                this.belowElement = new MobElement(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
                 break;
             case By by:
-                this.belowElement = new Element(this.testContext, "", by);
+                this.belowElement = new MobElement(this.testContext, "", by);
                 break;
             default:
-                this.belowElement = (Element) objectStringElementOrBy;
+                this.belowElement = (MobElement) objectStringElementOrBy;
         }
-        return (Element)this;
+        return (MobElement)this;
     }
 
     /**
@@ -259,18 +259,18 @@ public abstract class BaseElement {
      * @param objectStringElementOrBy
      * @return
      */
-    public Element toRightOf(Object objectStringElementOrBy) {
+    public MobElement toRightOf(Object objectStringElementOrBy) {
         switch (objectStringElementOrBy) {
             case String string:
-                this.toRightOfElement = new Element(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
+                this.toRightOfElement = new MobElement(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
                 break;
             case By by:
-                this.toRightOfElement = new Element(this.testContext, "", by);
+                this.toRightOfElement = new MobElement(this.testContext, "", by);
                 break;
             default:
-                this.toRightOfElement = (Element) objectStringElementOrBy;
+                this.toRightOfElement = (MobElement) objectStringElementOrBy;
         }
-        return (Element)this;
+        return (MobElement)this;
     }
 
     /**
@@ -278,18 +278,18 @@ public abstract class BaseElement {
      * @param objectStringElementOrBy
      * @return
      */
-    public Element toLeftOf(Object objectStringElementOrBy) {
+    public MobElement toLeftOf(Object objectStringElementOrBy) {
         switch (objectStringElementOrBy) {
             case String string:
-                this.toLeftOfElement = new Element(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
+                this.toLeftOfElement = new MobElement(this.testContext, string, By.xpath(NORMALIZE_SPACE_TEXT + string.trim() + "\"]"));
                 break;
             case By by:
-                this.toLeftOfElement = new Element(this.testContext, "", by);
+                this.toLeftOfElement = new MobElement(this.testContext, "", by);
                 break;
             default:
-                this.toLeftOfElement = (Element) objectStringElementOrBy;
+                this.toLeftOfElement = (MobElement) objectStringElementOrBy;
         }
-        return (Element)this;
+        return (MobElement)this;
     }
     
     /**
@@ -301,7 +301,7 @@ public abstract class BaseElement {
      * @param params : tableau des variables et de leur valorisation {var1, value1, var2, value2, var3, value3, ...}
      * @return l'common.page.element paramétré
      */
-    public Element injectValues(Map<String, String> params) {
+    public MobElement injectValues(Map<String, String> params) {
         String valuedPath = getInitialLocator().toString();
         String valuedName = getIntialName();
         for (Map.Entry<String, String> stringStringEntry : params.entrySet()) {
@@ -310,7 +310,7 @@ public abstract class BaseElement {
         }
         setName(valuedName);
         setLocator(getLocatorFromString(valuedPath));
-        return (Element)this;
+        return (MobElement)this;
     }
 
     /**
@@ -323,7 +323,7 @@ public abstract class BaseElement {
      * @param value : valeur de remplacement de la key dans le locator (clé de test_env.properties ou savedData.properties ou valeur en dur, la valeur est traduite si correspond à un clé de label_langue.properties)
      * @return l'common.page.element paramétré
      */
-    public Element injectValues(String key, String value) {
+    public MobElement injectValues(String key, String value) {
         return injectValues(Map.of(key, value));
     }
 
@@ -461,7 +461,7 @@ public abstract class BaseElement {
             boolean hasContainer = container != null;
             if (hasContainer) {
                 List<By> bys = new ArrayList<>();
-                Element myContainer = container;
+                MobElement myContainer = container;
                 while (hasContainer) {
                     bys.add(myContainer.getFindLocator());
                     myContainer = myContainer.getContainer();

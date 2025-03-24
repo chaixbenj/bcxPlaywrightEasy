@@ -17,7 +17,7 @@ import java.util.HashMap;
  *
  */
 @Slf4j
-public class Element extends BaseElement {
+public class MobElement extends MobBaseElement {
     private final HashMap<String, LocalDateTime> dateStartSearch = new HashMap<>();
 
     private static final String MSG_NOT_FOUND = "not found";
@@ -27,7 +27,7 @@ public class Element extends BaseElement {
      * @param elementName description, for report
      * @param elementLocator locator
      */
-    public Element(TestContext testContext, String elementName, By elementLocator) {
+    public MobElement(TestContext testContext, String elementName, By elementLocator) {
         super(testContext, elementName, elementLocator);
     }
 
@@ -35,7 +35,7 @@ public class Element extends BaseElement {
      * constructor
      * @param element element à copier
      */
-    public Element(Element element) {
+    public MobElement(MobElement element) {
         super(element);
     }
 

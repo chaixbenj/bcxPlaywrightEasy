@@ -111,6 +111,13 @@
 			<version>3.0.0-M5</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.10.2</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>
