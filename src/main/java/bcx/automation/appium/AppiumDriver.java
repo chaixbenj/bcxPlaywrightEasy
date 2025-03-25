@@ -1,5 +1,6 @@
 package bcx.automation.appium;
 
+import bcx.automation.properties.GlobalProp;
 import bcx.automation.report.Reporter;
 import bcx.automation.test.TestContext;
 import io.appium.java_client.android.AndroidDriver;
@@ -17,7 +18,7 @@ import java.time.Duration;
 public class AppiumDriver {
 
 
-    public static final String APPIUM_URL = "http://127.0.0.1:4723/";
+    public static final String APPIUM_URL = GlobalProp.getAppiumUrl();
 
     /**
      * Démarre le driver Appium sur Android.

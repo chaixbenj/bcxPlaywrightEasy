@@ -36,7 +36,8 @@ public class GlobalProp {
     public static final String RETRY_ON_FAIL = "retryOnFail";
     public static final String FIND_POTENTIAL_ELEMENT_JS = "findPotentialElementJS";
     public static final String ATTRIBUTES_POTENTIAL_ELEMENT = "attributesPotentialElement";
-    private static final String TEST_ID_ATTRIBUTE = "testIdAttribute";
+    public static final String TEST_ID_ATTRIBUTE = "testIdAttribute";
+    public static final String APPIUM_URL = "appiumUrl";
     public static final String RECORD_VIDEO = "recordVideo";
 
     @Setter
@@ -94,6 +95,8 @@ public class GlobalProp {
     private static String testIdAttribute;
     @Getter
     private static String attributesPotentialElement;
+    @Getter
+    private static String appiumUrl;
 
     /**
      * Charge les propriétés globales à partir du fichier de configuration.
@@ -137,6 +140,8 @@ public class GlobalProp {
             testIdAttribute = prop.getProperty(TEST_ID_ATTRIBUTE);
             findPotentialElementJS = Boolean.parseBoolean(prop.getProperty(FIND_POTENTIAL_ELEMENT_JS));
             attributesPotentialElement = prop.getProperty(ATTRIBUTES_POTENTIAL_ELEMENT);
+
+            appiumUrl = prop.getProperty(APPIUM_URL);
 
             if (!new File(testFileFolder).exists()) {
                 new File(testFileFolder).mkdir();
